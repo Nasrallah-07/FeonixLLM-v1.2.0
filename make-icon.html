@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+body{font-family:sans-serif;background:#111;color:#ccc;text-align:center;margin:0;padding:24px}
+h2{font-weight:500;color:#eee}
+.main img{border-radius:40px;box-shadow:0 14px 44px rgba(240,105,75,.3);width:256px;height:256px}
+.hint{background:#26262b;border-radius:12px;padding:14px 18px;display:inline-block;margin:16px 0;font-size:14px;line-height:1.7}
+.hint b{color:#FF8A5C}
+.sizes{display:flex;gap:18px;justify-content:center;align-items:flex-end;margin-top:10px}
+.sizes img{display:block}
+.sizes span{font-size:10px;color:#666;display:block;margin-top:4px}
+</style>
+</head>
+<body>
+<h2>FeonixLLM Icon</h2>
+<div class="main"><img id="big" alt="icon 256"></div>
+<div class="hint">
+<b>Right-click</b> 3la l'icon l'kbir l'fo9 →<br>
+<b>"Save image as..."</b> → smi-ha <b>icon.png</b> → sauvegardiha f<br>
+<b>your-project-folder\build\</b>
+</div>
+<div class="sizes" id="sizes"></div>
+<p>Preview: hakka ghadi yban f taskbar (16px) o Desktop (48px)</p>
+
+<h2 style="margin-top:40px">Microsoft Store assets (build/appx/)</h2>
+<div class="hint">Sib "Download" taht kola sora → save-ha b nafs smiyt-ha b7al ma m9tra, dakhlha f <b>build\appx\</b></div>
+<div class="sizes" id="storeAssets"></div>
+
+<script>
+const FLAME='M33.4 8.6c-.5 5-4.9 7.6-8.4 11.6-4 4.6-5 11.1-2 16.7 1.7 3.1 4.2 5.1 5.1 8.7.9 2.5.5 4.6 0 6.7 6.2-1.5 11.3-6.1 12.7-12.8 1.4-7.1-2.1-12.2-3.4-17.8-.9-4-.5-8.6-4-13.1z';
+const CORE='M31.2 24.5c-.3 3.6-3.1 5.1-4.7 8-1.8 3.1-1.4 6.7 1 9.3 1 1.2 1.8 2.3 2.1 3.9 2.9-1.6 4.8-4.3 5-7.8.2-3.6-1.7-6.2-2.5-9.1-.4-1.4-.7-2.8-.9-4.3z';
+const TILE='#EF6B4A', INK='#1E120C';
+
+function draw(size){
+  const cv=document.createElement('canvas');
+  cv.width=cv.height=size;
+  const g=cv.getContext('2d');
+  const K=size/64, R=15*K, small=size<=48;
+  g.beginPath();
+  g.moveTo(R,0);g.arcTo(size,0,size,size,R);g.arcTo(size,size,0,size,R);
+  g.arcTo(0,size,0,0,R);g.arcTo(0,0,size,0,R);g.closePath();
+  const grad=g.createLinearGradient(0,0,size,size);
+  grad.addColorStop(0,'#F5764F');grad.addColorStop(.55,'#EF6B4A');grad.addColorStop(1,'#E95F40');
+  g.fillStyle=grad;g.fill();
+  g.save();g.clip();
+  const hi=g.createLinearGradient(0,0,0,size*.5);
+  hi.addColorStop(0,'rgba(255,255,255,0.10)');hi.addColorStop(1,'rgba(255,255,255,0)');
+  g.fillStyle=hi;g.fillRect(0,0,size,size*.5);
+  g.restore();
+  g.save();g.scale(K,K);
+  if(small){g.translate(32,32);g.scale(1.14,1.14);g.translate(-32,-32);}
+  g.fillStyle=INK;g.fill(new Path2D(FLAME));
+  g.fillStyle=TILE;g.fill(new Path2D(CORE));
+  if(size>=64){
+    g.fillStyle=INK;
+    g.globalAlpha=.9; g.beginPath();g.arc(44,13,2.4,0,7);g.fill();
+    g.globalAlpha=.55;g.beginPath();g.arc(49.5,20.5,1.5,0,7);g.fill();
+    g.globalAlpha=1;
+  }
+  g.restore();
+  return cv.toDataURL('image/png');
+}
+
+/* l'icon l'kbir — hada li ghadi tdir 3lih right-click */
+document.getElementById('big').src = draw(256);
+
+/* previews dyal les sizes sghar */
+const sizesEl=document.getElementById('sizes');
+[16,24,32,48].forEach(s=>{
+  const w=document.createElement('div');
+  const img=document.createElement('img');
+  img.src=draw(s); img.width=s; img.height=s;
+  const lbl=document.createElement('span'); lbl.textContent=s+'px';
+  w.append(img,lbl); sizesEl.append(w);
+});
+
+function drawWide(w,h){
+  const cv=document.createElement('canvas');cv.width=w;cv.height=h;
+  const g=cv.getContext('2d');
+  const grad=g.createLinearGradient(0,0,w,h);
+  grad.addColorStop(0,'#F5764F');grad.addColorStop(.55,'#EF6B4A');grad.addColorStop(1,'#E95F40');
+  g.fillStyle=grad;g.fillRect(0,0,w,h);
+  const hi=g.createLinearGradient(0,0,0,h*.5);
+  hi.addColorStop(0,'rgba(255,255,255,0.10)');hi.addColorStop(1,'rgba(255,255,255,0)');
+  g.fillStyle=hi;g.fillRect(0,0,w,h*.5);
+  const s=h*0.62,cx=h*0.62,cy=h/2;
+  g.save();g.translate(cx-s*0.5,cy-s*0.5);g.scale(s/64,s/64);
+  g.fillStyle=INK;g.fill(new Path2D(FLAME));
+  g.fillStyle=TILE;g.fill(new Path2D(CORE));
+  g.restore();
+  g.fillStyle='#F2F0E9';g.font='600 '+(h*0.34)+'px sans-serif';g.textBaseline='middle';
+  g.fillText('FeonixLLM',h*1.12,cy+h*0.02);
+  return cv.toDataURL('image/png');
+}
+const storeAssets=[
+  {name:'Square44x44Logo.png',size:44,wide:false},
+  {name:'Square150x150Logo.png',size:150,wide:false},
+  {name:'StoreLogo.png',size:50,wide:false},
+  {name:'Wide310x150Logo.png',w:310,h:150,wide:true}
+];
+const saEl=document.getElementById('storeAssets');
+storeAssets.forEach(a=>{
+  const url=a.wide?drawWide(a.w,a.h):draw(a.size);
+  const w=document.createElement('div');
+  const img=document.createElement('img');
+  img.src=url;img.width=a.wide?Math.min(a.w,180):Math.min(a.size,96);img.height=a.wide?(a.h*img.width/a.w):img.width;
+  img.style.borderRadius=a.wide?'8px':'0';
+  const lbl=document.createElement('span');lbl.textContent=a.name+(a.wide?' ('+a.w+'\u00d7'+a.h+')':' ('+a.size+'px)');
+  const dl=document.createElement('a');dl.href=url;dl.download=a.name;dl.textContent='Download';
+  dl.style.cssText='display:block;margin-top:6px;color:#FF8A5C;font-size:11px;text-decoration:none';
+  w.append(img,lbl,dl);saEl.append(w);
+});
+</script>
+</body>
+</html>

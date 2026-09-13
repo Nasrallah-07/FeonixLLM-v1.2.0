@@ -1,0 +1,59 @@
+{
+  "name": "feonixllm",
+  "productName": "FeonixLLM",
+  "version": "1.2.0",
+  "description": "FeonixLLM — local-first AI studio",
+  "author": "FeonixLLM",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win"
+  },
+  "devDependencies": {
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "com.feonixllm.app",
+    "productName": "FeonixLLM",
+    "files": [
+      "main.js",
+      "preload.js",
+      "app/**/*"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "appx",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.png"
+    },
+    "appx": {
+      "identityName": "NasrallahHAKIMI.FeonixLLM",
+      "publisher": "CN=F7B890CC-9517-4A1E-BB10-7EF944CB07F5",
+      "publisherDisplayName": "Nasrallah HAKIMI",
+      "applicationId": "FeonixLLM",
+      "backgroundColor": "#262624"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "FeonixLLM"
+    }
+  },
+  "dependencies": {
+    "git": "^0.1.5"
+  }
+}
